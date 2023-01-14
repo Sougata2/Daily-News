@@ -86,11 +86,7 @@
                     action="{{ url_for('sources') }}"
                     method="POST"
                   >
-                    <input
-                      class="hidden"
-                      name="source_id"
-                      value="bbc-news"
-                    />
+                    <input class="hidden" name="source_id" value="bbc-news" />
                     <button class="btn" type="submit">BBC</button>
                   </form>
                 </li>
@@ -101,9 +97,7 @@
                     method="POST"
                   >
                     <input class="hidden" name="source_id" value="bloomberg" />
-                    <button class="btn" type="submit">
-                      Bloomberg
-                    </button>
+                    <button class="btn" type="submit">Bloomberg</button>
                   </form>
                 </li>
                 <li>
@@ -128,14 +122,8 @@
                     action="{{ url_for('sources') }}"
                     method="POST"
                   >
-                    <input
-                      class="hidden"
-                      name="source_id"
-                      value="espn"
-                    />
-                    <button class="btn" type="submit">
-                        ESPN
-                    </button>
+                    <input class="hidden" name="source_id" value="espn" />
+                    <button class="btn" type="submit">ESPN</button>
                   </form>
                 </li>
                 <li>
@@ -199,10 +187,32 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 style="position: absolute; bottom: 1rem"
-                >Read More <i
-                  class="fa fa-solid fa-arrow-up-right-from-square"
-                ></i
+                >Read More
+                <i class="fa fa-solid fa-arrow-up-right-from-square"></i
               ></a>
+              <button
+                class="btn btn-primary expand-btn"
+                style="position: absolute; right: 1rem; bottom: 1rem"
+              >
+                <i class="fa fa-solid fa-maximize"></i>
+              </button>
+            </div>
+            <div class="content-card card hidden">
+              <button
+                class="close-card-container"
+                style="
+                  position: absolute;
+                  top: 0.2rem;
+                  right: 0.2rem;
+                  border-style: none;
+                  border-radius: 100%;
+                "
+              >
+                <i class="fa fa-duotone fa-circle-xmark"></i>
+              </button>
+              <div class="card-body" style="padding: 40px 10px">
+                {{ result["content"] }}
+              </div>
             </div>
           </div>
         </div>
@@ -253,4 +263,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     -->
   </body>
+  <script src="../static/app.js"></script>
 </html>
