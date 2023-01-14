@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import requests
+import newspaper
 from keys import API_KEY
 from datetime import datetime, timedelta
 
@@ -13,10 +14,24 @@ end = start - timedelta(days=7)
 source = 'the-times-of-india'
 source_page_number = 1
 
+def add_content(response):
+    for result in response["articles"]:
+        text = ''
+        try:
+            article = newspaper.Article(result["url"])
+            article.download()
+            article.parse()
+            text = article.text
+        except:
+            text = "Content is not provided by the site.🤕"
+
+        result['content'] = text
+
 @app.route("/")
 def index():
     url = f'https://newsapi.org/v2/top-headlines?country=in&apiKey={API_KEY}'
     response = requests.get(url).json()
+    add_content(response)
     # print(response)
     return render_template('index.html', results=response["articles"])
 
@@ -38,13 +53,15 @@ def search():
         if request.form.get('next'):
             search_page_number += 1
 
-        url = f'https://newsapi.org/v2/everything?q={key_word}&apiKey={API_KEY}&pageSize=10&page={search_page_number}&from={end}&end={start}&sortBy=publishedAt'
+        url = f'https://newsapi.org/v2/everything?q={key_word}&apiKey={API_KEY}&language=en&pageSize=10&page={search_page_number}&from={end}&end={start}&sortBy=publishedAt'
         response = requests.get(url).json()
+        add_content(response)
 
     else:
         search_page_number = 1
-        url = f'https://newsapi.org/v2/everything?q={key_word}&apiKey={API_KEY}&pageSize=10&page={search_page_number}&from={end}&end={start}&sortBy=publishedAt'
+        url = f'https://newsapi.org/v2/everything?q={key_word}&apiKey={API_KEY}&language=en&pageSize=10&page={search_page_number}&from={end}&end={start}&sortBy=publishedAt'
         response = requests.get(url).json()
+        add_content(response)
 
     if search_page_number == 1:
         has_prev_page = False
@@ -71,6 +88,7 @@ def sources():
 
         url = f'https://newsapi.org/v2/everything?sources={source}&language=en&apiKey={API_KEY}&pageSize=10&page={source_page_number}&from={end}&end={start}&sortBy=publishedAt'
         response = requests.get(url).json()
+        add_content(response)
 
         if source_page_number == 1:
             has_prev_page = False
